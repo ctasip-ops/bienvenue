@@ -21,6 +21,7 @@
       text-align: center;
       overflow-y: auto;
       padding: 2rem 0;
+      cursor: pointer; /* Indique qu'on peut cliquer n'importe où pour passer en plein écran */
     }
     .container {
       width: 85%;
@@ -71,7 +72,7 @@
   <div class="container">
     <img src="logo.jpg" alt="Logo" class="logo" id="site-logo" onerror="this.style.display='none';">
 
-    <!-- Zone dynamique qui affichera un encadré par visiteur -->
+    <!-- Zone dynamique d'affichage des encadrés -->
     <div id="cards-container" style="width: 100%; display: flex; flex-direction: column; gap: 1.5rem;">
       <div class="card" id="standby-card">
         <p class="standby-msg">Bienvenue</p>
@@ -82,16 +83,30 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweZ9OmSVqYC3b9Ee9dIwjKNL7V-hUqu9ynCVodBSC0KZH7zHc2DwviqGpxOmgq2tG_/exec";
 
+    // --- Fonction Plein Écran ---
+    function enableFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.log("Plein écran non disponible :", err.message);
+        });
+      }
+    }
+
+    // Active le plein écran au premier clic / touché sur l'écran de la tablette
+    document.addEventListener("click", enableFullScreen);
+    document.addEventListener("touchstart", enableFullScreen);
+
+    // --- Récupération des événements ---
     async function fetchCompany() {
       try {
         const response = await fetch(SCRIPT_URL);
         const data = await response.json();
         
         const container = document.getElementById("cards-container");
-        container.innerHTML = ""; // Nettoie l'affichage précédent
+        container.innerHTML = ""; // Nettoie le contenu précédent
         
         if (data && data.companies && data.companies.length > 0) {
-          // Crée un encadré séparé pour chaque visiteur en cours
+          // Génère un encadré distinct par événement/visiteur en cours
           data.companies.forEach(companyName => {
             const card = document.createElement("div");
             card.className = "card";
@@ -102,7 +117,7 @@
             container.appendChild(card);
           });
         } else {
-          // Affichage de veille si aucun événement
+          // Affichage du mode veille si aucun événement
           const standbyCard = document.createElement("div");
           standbyCard.className = "card";
           standbyCard.innerHTML = `<p class="standby-msg">Bienvenue</p>`;
