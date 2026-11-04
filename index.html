@@ -32,7 +32,6 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
-      transition: all 0.5s ease-in-out;
     }
     h2 {
       font-size: 2.2rem;
@@ -59,31 +58,19 @@
 <body>
 
   <div class="container">
-    <!-- Message avec le nom de la société -->
     <div class="card" id="welcome-card" style="display: none;">
       <h2>Bienvenue dans nos locaux</h2>
       <h1 id="company-name">---</h1>
     </div>
-
-    <!-- Écran d'attente neutre -->
     <div id="standby-card" style="display: block;">
       <p class="standby-msg">Bienvenue</p>
     </div>
   </div>
 
   <script>
-    // Identifiant de votre agenda Google
-    const CALENDAR_ID = "55652ce3e4709f2880120c0a5702f3d38d71f56575a6e465cdf8032a21a25607@group.calendar.google.com";
-
-    // Remplacez cette URL par votre lien de déploiement Google Apps Script (https://script.google.com/macros/s/...)
-    const SCRIPT_URL = "VOTRE_URL_GOOGLE_APPS_SCRIPT";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweZ9OmSVqYC3b9Ee9dIwjKNL7V-hUqu9ynCVodBSC0KZH7zHc2DwviqGpxOmgq2tG_/exec";
 
     async function fetchCompany() {
-      if (!SCRIPT_URL || SCRIPT_URL === "VOTRE_URL_GOOGLE_APPS_SCRIPT") {
-        console.warn("N'oubliez pas d'indiquer l'URL de votre déploiement Google Apps Script.");
-        return;
-      }
-
       try {
         const response = await fetch(SCRIPT_URL);
         const data = await response.json();
@@ -106,7 +93,7 @@
     }
 
     fetchCompany();
-    setInterval(fetchCompany, 60000);
+    setInterval(fetchCompany, 30000); // Actualisation toutes les 30 secondes
   </script>
 </body>
 </html>
