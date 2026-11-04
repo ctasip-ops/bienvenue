@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenue</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+    .container {
+      width: 85%;
+      max-width: 900px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4rem 3rem;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      transition: all 0.5s ease-in-out;
+    }
+    h2 {
+      font-size: 2.2rem;
+      color: #94a3b8;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+    h1 {
+      font-size: 4.5rem;
+      color: #38bdf8;
+      font-weight: 700;
+      line-height: 1.2;
+      word-wrap: break-word;
+    }
+    .standby-msg {
+      font-size: 2rem;
+      color: #64748b;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Message avec le nom de la société -->
+    <div class="card" id="welcome-card" style="display: none;">
+      <h2>Bienvenue dans nos locaux</h2>
+      <h1 id="company-name">---</h1>
+    </div>
+
+    <!-- Écran d'attente neutre -->
+    <div id="standby-card" style="display: block;">
+      <p class="standby-msg">Bienvenue</p>
+    </div>
+  </div>
+
+  <script>
+    // Identifiant de votre agenda Google
+    const CALENDAR_ID = "55652ce3e4709f2880120c0a5702f3d38d71f56575a6e465cdf8032a21a25607@group.calendar.google.com";
+
+    // Remplacez cette URL par votre lien de déploiement Google Apps Script (https://script.google.com/macros/s/...)
+    const SCRIPT_URL = "VOTRE_URL_GOOGLE_APPS_SCRIPT";
+
+    async function fetchCompany() {
+      if (!SCRIPT_URL || SCRIPT_URL === "VOTRE_URL_GOOGLE_APPS_SCRIPT") {
+        console.warn("N'oubliez pas d'indiquer l'URL de votre déploiement Google Apps Script.");
+        return;
+      }
+
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const data = await response.json();
+        
+        const nameElem = document.getElementById("company-name");
+        const welcomeCard = document.getElementById("welcome-card");
+        const standbyCard = document.getElementById("standby-card");
+        
+        if (data && data.company && data.company.trim() !== "") {
+          nameElem.innerText = data.company;
+          welcomeCard.style.display = "block";
+          standbyCard.style.display = "none";
+        } else {
+          welcomeCard.style.display = "none";
+          standbyCard.style.display = "block";
+        }
+      } catch (err) {
+        console.error("Erreur de récupération :", err);
+      }
+    }
+
+    fetchCompany();
+    setInterval(fetchCompany, 60000);
+  </script>
+</body>
+</html>
