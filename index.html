@@ -24,8 +24,19 @@
     .container {
       width: 85%;
       max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* Style et taille du logo */
+    .logo {
+      max-width: 140px;
+      max-height: 140px;
+      margin-bottom: 2.5rem;
+      object-fit: contain;
     }
     .card {
+      width: 100%;
       background: rgba(255, 255, 255, 0.04);
       padding: 4rem 3rem;
       border-radius: 32px;
@@ -49,7 +60,7 @@
       word-wrap: break-word;
     }
     .standby-msg {
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: #64748b;
       font-weight: 300;
     }
@@ -58,10 +69,14 @@
 <body>
 
   <div class="container">
+    <!-- Affichage du logo -->
+    <img src="logo.jpg" alt="Logo" class="logo" id="site-logo" onerror="this.style.display='none';">
+
     <div class="card" id="welcome-card" style="display: none;">
       <h2>Bienvenue dans nos locaux</h2>
       <h1 id="company-name">---</h1>
     </div>
+    
     <div id="standby-card" style="display: block;">
       <p class="standby-msg">Bienvenue</p>
     </div>
